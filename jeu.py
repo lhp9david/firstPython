@@ -5,7 +5,16 @@ def genere_un_nombre():
     return randint(1, 100)
 
 def demande_un_nombre():
-    return int(input("Entrez un nombre entre 1 et 100: "))
+    while True:
+        try:
+            nombre = int(input("Entrez un nombre entre 1 et 100 : "))
+            if nombre < 1 or nombre > 100:
+                print("Le nombre doit etre entre 1 et 100")
+            else:
+                return nombre
+        except ValueError:
+            print("Vous devez entrer un nombre")
+
 
 def compare(nbr1, nbr2):
     if nbr1 < nbr2:
