@@ -27,6 +27,19 @@ def compare(nbr1, nbr2):
 def affiche_resultat(resultat):
     print(resultat)
 
+def rejouer():
+    while True:
+        try:
+            rejouer = input("Voulez-vous rejouer ? (o/n) : ")
+            if rejouer == "o":
+                return True
+            elif rejouer == "n":
+                return False
+            else:
+                print("Vous devez entrer o ou n")
+        except ValueError:
+            print("Vous devez entrer o ou n")
+
 def main():
     nombre_a_trouver = genere_un_nombre()
     nombre_dessais = 0
@@ -37,7 +50,11 @@ def main():
         resultat = compare(nombre_a_trouver, nombre)
         affiche_resultat(resultat)
     print("Vous avez trouvé en", nombre_dessais, "essais")
-    os.system("pause")
+    if rejouer():
+        main()
+    else:
+        print("Au revoir")
+        os.system("pause")
 
 if __name__ == "__main__":
     main()
