@@ -1,20 +1,11 @@
-import os
+import tkinter as tk
 from random import randint
 
+nombre_dessais = 0  # Initialisation du compteur d'essais
+
 def genere_un_nombre():
-    return randint(1, 100)
-
-def demande_un_nombre():
-    while True:
-        try:
-            nombre = int(input("Entrez un nombre entre 1 et 100 : "))
-            if nombre < 1 or nombre > 100:
-                print("Le nombre doit etre entre 1 et 100")
-            else:
-                return nombre
-        except ValueError:
-            print("Vous devez entrer un nombre")
-
+    # return randint(1, 100)
+    return 50
 
 def compare(nbr1, nbr2):
     if nbr1 < nbr2:
@@ -23,41 +14,53 @@ def compare(nbr1, nbr2):
         return "Trop petit"
     else:
         return "Gagné"
-    
-def affiche_resultat(resultat):
-    print(resultat)
+
+def demande_nombre(event=None):
+    global nombre_dessais  # Utilisation de la variable globale
+    try:
+        nombre = int(entry.get())
+        resultat = compare(nombre_a_trouver, nombre)
+        label_resultat.config(text=resultat)
+        nombre_dessais += 1  # Incrémentation du nombre d'essais
+        if resultat == "Gagné":
+            
+            label_resultat.config(text=f"Vous avez trouvé en {nombre_dessais} essais")  # Affichage du nombre d'essais
+            btn_submit.config(state=tk.DISABLED)
+        entry.delete(0, tk.END)
+    except ValueError:
+        label_resultat.config(text="Veuillez entrer un nombre valide.")
 
 def rejouer():
-    while True:
-        try:
-            rejouer = input("Voulez-vous rejouer ? (o/n) : ")
-            if rejouer == "o":
-                return True
-            elif rejouer == "n":
-                return False
-            else:
-                print("Vous devez entrer o ou n")
-        except ValueError:
-            print("Vous devez entrer o ou n")
-
-def main():
+    global nombre_a_trouver
+    global nombre_dessais  # Réinitialisation du compteur d'essais lors d'une nouvelle partie
     nombre_a_trouver = genere_un_nombre()
     nombre_dessais = 0
-    resultat = ""
-    while resultat != "Gagné":
-        nombre_dessais += 1
-        nombre = demande_un_nombre()
-        resultat = compare(nombre_a_trouver, nombre)
-        affiche_resultat(resultat)
-    print("Vous avez trouvé en", nombre_dessais, "essais")
-    if rejouer():
-        main()
-    else:
-        print("Au revoir")
-        os.system("pause")
+    label_resultat.config(text='')
+    btn_submit.config(state=tk.NORMAL)
 
-if __name__ == "__main__":
-    main()
+def on_enter_key(event):
+    demande_nombre()
 
-    
+nombre_a_trouver = genere_un_nombre()
 
+root = tk.Tk()
+root.title("Jeu devine le nombre")
+
+label = tk.Label(root, text="Entrez un nombre entre 1 et 100 :")
+label.pack()
+
+entry = tk.Entry(root)
+entry.pack()
+
+btn_submit = tk.Button(root, text="Valider", command=demande_nombre)
+btn_submit.pack()
+
+label_resultat = tk.Label(root, text='')
+label_resultat.pack()
+
+btn_rejouer = tk.Button(root, text="Rejouer", command=rejouer)
+btn_rejouer.pack()
+
+entry.bind('<Return>', on_enter_key)
+
+root.mainloop()
