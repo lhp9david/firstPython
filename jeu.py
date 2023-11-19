@@ -2,10 +2,10 @@ import tkinter as tk
 from random import randint
 
 nombre_dessais = 0  # Initialisation du compteur d'essais
+nombre_a_trouver = 0  # Initialisation du nombre à deviner
 
 def genere_un_nombre():
-    # return randint(1, 100)
-    return 50
+    return randint(1, 100)
 
 def compare(nbr1, nbr2):
     if nbr1 < nbr2:
@@ -23,7 +23,6 @@ def demande_nombre(event=None):
         label_resultat.config(text=resultat)
         nombre_dessais += 1  # Incrémentation du nombre d'essais
         if resultat == "Gagné":
-            
             label_resultat.config(text=f"Vous avez trouvé en {nombre_dessais} essais")  # Affichage du nombre d'essais
             btn_submit.config(state=tk.DISABLED)
         entry.delete(0, tk.END)
